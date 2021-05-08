@@ -1,0 +1,95 @@
+  #######################################################################
+#   _   _       _   _  __ _           ____  _                         #
+#  | \ | | ___ | |_(_)/ _(_) ___ _ __|  _ \| | __ _ _   _  ___ _ __   #
+#  |  \| |/ _ \| __| | |_| |/ _ \ '__| |_) | |/ _` | | | |/ _ \ '__|  #
+#  | |\  | (_) | |_| |  _| |  __/ |  |  __/| | (_| | |_| |  __/ |     #
+#  |_| \_|\___/ \__|_|_| |_|\___|_|  |_|   |_|\__,_|\__, |\___|_|     #
+#  By RedBoard                                      |___/             #
+#######################################################################
+
+
+# %player% for the mentioned players
+# %caller% for the interlocutor
+# {#D04949} for HEXA colors
+
+
+################ BASIQUE ################
+
+# Display format of the nickname in the chat
+# Note : the colors are reset after the nickname to take that of the normal chat
+formatting: '&6%player%@'
+# Set to true to allow self-mentioning (why not after all ... x'D)
+mentionYourSelf: false
+# Name to display
+namePlugin: "{#02BA33}N{#06B542}o{#0BB052}t{#10AB62}i{#15A671}f{#1AA181}e{#1F9C91}r{#2498A0}P{#2993B0}l{#2E8EC0}a{#3389CF}y{#3884DF}e{#3D7FEF}r :&f"
+# Language (see language directory)
+# You can directly create your languages ​​files
+locale: en_US
+# Symbol to use to mention the player
+# "" to mention directly with the nickname, without symbol
+symbol: '@'
+# Position of the symbol in relation to the nickname to mention ('before' OR 'after')
+posSymbol: 'after'
+# 'true' to display the player's nickname
+# 'false' to display the player's original nickname
+nickname: false
+
+# If the deadline is not exceeded / If the player does not have permission (from everyone for example)
+# / If the player cannot mention himself / If the player does not have the necessary money:
+# true to send the message without mentioning the player
+# false to delete the send message and notify the caller
+errorAction: false
+
+
+################ EVERYONE ################
+
+# The symbol is identical to the one in the "symbol" section just above
+# Display format of everyone in the chat
+# Note : the colors are reset after the mention to take that of the normal chats
+formattingEv : "&deveryone@"
+
+# For the title and action bar, they will be identical to those of the "additional additions" section
+# If activSound is set to false in the "additional additions" section, it is not also deactivated here.
+SoundEv:
+  # List of available sounds : https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+  type: BLOCK_BEACON_DEACTIVATE
+  volume: 1
+  pitch: 1
+
+
+################ DELAY ################
+
+# Delay between each mention of a player
+# 0 to disable
+Delay: 5
+
+
+################ ECONOMIE ################
+
+# Set to true if you want to use the payment system to pay the mention
+# If true, you need Vault
+EcoUse: false
+# Mention price
+ecoPrice: 10.00
+ecoSymbol: "$"
+
+
+################ ADDITIONAL ADDITIONS ################
+
+activTitle: true
+Title:
+  mainTitle: "&cNotifier &l&f| {#66D22C}%caller%"
+  subTitle: "&2A player mentioned you in the chat!"
+  fadeIn: 10
+  stay: 70
+  fadeOut: 20
+
+activActionBar: true
+ActionBar: "{#C9F55B}Player &a%caller% {#34C1C8}mentioned you !"
+
+activSound: true
+Sound:
+  # List of available sounds : https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+  type: BLOCK_NOTE_BLOCK_IRON_XYLOPHONE
+  volume: 1
+  pitch: 1
