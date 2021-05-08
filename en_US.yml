@@ -1,0 +1,36 @@
+enableMention: 'You have activated the possibility of mentioning yourself!'
+enableMentionError: 'You have already activated this function!'
+disableMention: 'You have disabled the possibility of mentioning yourself!'
+disableMentionError: 'You have already deactivated this function!'
+
+reload: 'Plugin loading successfully completed!'
+clear: 'Please execute "/notifier confirm" to clear the list of players to block mentions.'
+confirm: 'The blacklist of mentionable player has been reset!'
+
+confirmError: 'You confirmed too late, please make "/notifier clear".'
+permissionMessage: 'You don''t have permission to do this.'
+yourselfMention: 'You can''t mention yourself!'
+delayMention: 'This player was already mentioned a short time ago.'
+playerListError: 'This player does not accept mention.'
+
+enoughMoney: 'You don''t have enough money to mention.'
+paymentMessage: 'You have to pay %price% %symbol% to mention this player.'
+
+# %n pour le retour à la ligne
+helpMessage: '
+  • Mention someone to get their attention in the chat with %mentionFormat%&r !
+  %n
+  %helpDelay%
+  %helpEco%
+  %n
+  &3Commands :
+  %n
+  &r- &7/notifier on&r/&7off &r| &7/notifier &8-> &rwhether or not to allow players to mention you'
+
+helpAdmin: '
+  &r- &7/notifier reload &8-> &rReload the plugin config as well as the language files.
+  %n
+  &r- &7/notifier clear &8-> &rReset the list of players who requested not to be mentioned.'
+
+helpDelay: '• There is a &6%delay% second delay between each mention of the same player. %n'
+helpEco: '• Each mention will cost you &6%price% %symbol%&r. %n'
