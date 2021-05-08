@@ -1,0 +1,36 @@
+enableMention: 'Sie haben die Möglichkeit aktiviert, sich selbst zu erwähnen!'
+enableMentionError: 'Sie haben diese Funktion bereits aktiviert!'
+disableMention: 'Sie haben die Möglichkeit deaktiviert, sich selbst zu erwähnen!'
+disableMentionError: 'Sie haben diese Funktion bereits deaktiviert!'
+
+reload: 'Das Laden des Plugins ist erfolgreich abgeschlossen!'
+clear: 'Bitte führen Sie "/notifier confirm" aus, um die Liste der nicht meldepflichtigen Spieler zu löschen.'
+confirm: 'Die schwarze Liste der genannten Spieler wurde zurückgesetzt!'
+
+confirmError: 'Sie haben zu spät bestätigt, bitte schreiben Sie "/notifier clear".'
+permissionMessage: 'Sie haben keine Erlaubnis dazu.'
+yourselfMention: 'Du kannst dich nicht erwähnen!'
+delayMention: 'Dieser Spieler wurde bereits vor kurzem erwähnt.'
+playerListError: 'Dieser Spieler akzeptiert keine Vermerke.'
+
+enoughMoney: 'Sie haben nicht genug Geld, um jemanden zu erwähnen.'
+paymentMessage: 'Sie müssen %price% %symbol% ​​bezahlen, um diesen Spieler zu erwähnen.'
+
+# %n für die Rückkehr zur Linie
+helpMessage: '
+  • Erwähnen Sie jemanden, der seine Aufmerksamkeit auf den Chat mit %mentionFormat% &r lenkt !
+  %n
+  %helpDelay%
+  %helpEco%
+  %n
+  &3Aufträge :
+  %n
+  &r- &7/notifier on&r/&7off &r| &7/notifier &8-> &rob die Spieler dich erwähnen dürfen oder nicht'
+
+helpAdmin: '
+  &r- &7/notifier reload &8-> &rLaden Sie die Plugin-Konfiguration sowie die Sprachdateien neu.
+  %n
+  &r- &7/notifier clear &8-> &rSetzen Sie die Liste der Spieler zurück, die nicht erwähnt werden möchten.'
+
+helpDelay: '• Es gibt &6%delay% sekunden &rverzögerung zwischen jeder Erwähnung desselben Spielers. %n'
+helpEco: '• Jede Erwähnung kostet Sie &6%price% %symbol%&r. %n'
