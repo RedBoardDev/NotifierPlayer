@@ -1,0 +1,37 @@
+﻿enableMention: '已启用@功能,当有人@你时你将会收到提醒'
+enableMentionError: '你的@功能已启用'
+disableMention: '你已关闭@功能,当有人@你时你将不会收到提醒'
+disableMentionError: '你的@功能已关闭'
+
+reload: '重载成功!'
+#重置的意思就是,把你服务器所有关了@功能的玩家名单重置
+clear: '请输入 "/notifier confirm" 来重置黑名单'
+confirm: '黑名单已重制!'
+
+confirmError: '确认超时,请重新输入 "/notifier clear".'
+permissionMessage: '你没有权限这么做'
+yourselfMention: '你不能@你自己'
+delayMention: '你刚刚已经@他了,请稍后重试以免打扰'
+playerListError: '该玩家已关闭了他的提醒功能'
+
+enoughMoney: '你没有足够的钱这么做'
+paymentMessage: '你必须支付 %price% %symbol% 来@这个人'
+
+# %n pour le retour à la ligne
+helpMessage: '
+  • 在聊天中输入 %mentionFormat%&r 来@玩家 !
+  %n
+  %helpDelay%
+  %helpEco%
+  %n
+  &3Commands :
+  %n
+  &r- &7/notifier on&r/&7off &r| &7/notifier &8-> &r是否允许其他玩家@你'
+
+helpAdmin: '
+  &r- &7/notifier reload &8-> &r重载插件
+  %n
+  &r- &7/notifier clear &8-> &r重置@黑名单.'
+
+helpDelay: '• 每次@玩家需要间隔 &6%delay% 秒. %n'
+helpEco: '• 每次@将花费 &6%price% %symbol%&r. %n'
