@@ -1,13 +1,10 @@
 enableMention: 'Vous avez activé la possibilité de vous mentionner!'
-enableMentionError: 'Vous avez déjà activé cette fonction!'
 disableMention: 'Vous avez désactivé la possibilité de vous mentionner!'
-disableMentionError: 'Vous avez déjà désactivé cette fonction!'
+enableMentionPlayer: 'Vous avez activé la possibilité de vous mentionner pour %player% !'
+disableMentionPlayer: 'Vous avez désactivé la possibilité de vous mentionner pour %player% !'
 
 reload: 'Le chargement du plugin est terminé avec succès!'
-clear: 'Veuillez exécuter "/notifier confirm" pour effacer la liste des joueurs non notifiable.'
-confirm: 'La liste noire des joueurs mentionnés a été réinitialisée!'
 
-confirmError: 'Vous avez confirmé trop tard, veuillez écrire "/notifier clear".'
 permissionMessage: 'Vous n''avez pas la permission de faire cela.'
 yourselfMention: 'Vous ne pouvez pas vous mentionner!'
 delayMention: 'Ce joueur a déjà été mentionné il y a peu de temps.'
@@ -22,15 +19,19 @@ helpMessage: '
   %n
   %helpDelay%
   %helpEco%
+  • Vous avez bloquer la possibilité de vous mentionner à &6%player_bloqued%
+  %n
   %n
   &3Commandes :
   %n
-  &r- &7/notifier on&r/&7off &r| &7/notifier &8-> &rautoriser ou non les jouers à vous mentionner'
+  &r- &7/notifier toggle &r| &7/notifier &8-> &rautoriser ou non tout les joueurs à vous mentionner
+  %n
+  &r- &7/notifier toggle {player} &8-> &rautoriser ou non le joueur à vous mentionner'
 
 helpAdmin: '
-  &r- &7/notifier reload &8-> &rRecharger la config du plugin ainsi que les fichiers langues.
-  %n
-  &r- &7/notifier clear &8-> &rRemettre à zéro la liste des joueurs qui ont demandés à ne pas être mentionnés.'
+  &r- &7/notifier reload &8-> &rRecharger la config du plugin ainsi que les fichiers langues.'
 
 helpDelay: '• Il y a &6%delay% secondes &rde delay entre chaque mention de même joueur. %n'
 helpEco: '• Chaque mention vous coûtera &6%price% %symbol%&r. %n'
+helpInfoIgnore1: 'Personne'
+helpInfoIgnore2: 'Tout le monde'

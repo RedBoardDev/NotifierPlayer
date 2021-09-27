@@ -1,13 +1,10 @@
 enableMention: 'Aktivovali ste možnosť zmienky o sebe!'
-enableMentionError: 'Túto funkciu ste už aktivovali!'
 disableMention: 'Deaktivovali ste možnosť zmienky o sebe!'
-disableMentionError: 'Túto funkciu ste už deaktivovali!'
+enableMentionPlayer: 'Aktivovali ste možnosť uviesť sa %player% !'
+disableMentionPlayer: 'Deaktivovali ste možnosť uviesť sa za %player% !'
 
 reload: 'Načítanie doplnku je úspešne dokončené!'
-clear: 'Vykonaním príkazu "/notifier confirm" vymažete zoznam hráčov, ktorí nepodliehajú oznamovacej povinnosti.'
-confirm: 'Čierna listina spomínaných hráčov bola vynulovaná!'
 
-confirmError: 'Potvrdili ste príliš neskoro, napíšte "/notifier clear".'
 permissionMessage: 'Na to nemáte povolenie.'
 yourselfMention: 'Nemôžete sa spomenúť!'
 delayMention: 'Tento hráč bol už spomenutý pred krátkym časom.'
@@ -22,15 +19,19 @@ helpMessage: '
   %n
   %helpDelay%
   %helpEco%
+  • Musíte zablokovať možnosť spomenúť sa na seba &6%player_bloqued%
   %n
-  &3Commandes :
   %n
-  &r- &7/notifier on&r/&7off &r| &7/notifier &8-> &rči dovoliť hráčom spomenúť si alebo nie'
+  &Objednávky :
+  %n
+  &r- &7/notifier toggle &r| &7/notifier &8-> &rdovoľte alebo nie všetkým hráčom, aby vás spomenuli
+  %n
+  &r- &7/notifier toggle {player} &8-> &rsplnomocnite hráča alebo nie, aby sa o vás zmienil'
 
 helpAdmin: '
-  &r- &7/notifier reload &8-> &rZnovu načítajte konfiguráciu doplnku a jazykové súbory.
-  %n
-  &r- &7/notifier clear &8-> &rObnovte zoznam hráčov, ktorí požiadali, aby neboli uvedení.'
+  &r- &7/notifier reload &8-> &rZnovu načítajte konfiguráciu doplnku a jazykové súbory.'
 
 helpDelay: '• Existuje &6%delay% sekúnd &roneskorenie medzi každou zmienkou o rovnakom hráčovi. %n'
 helpEco: '• Každá zmienka vás bude stáť &6%price% %symbol%&r. %n'
+helpInfoIgnore1: 'Ľudia'
+helpInfoIgnore2: 'Všetci'

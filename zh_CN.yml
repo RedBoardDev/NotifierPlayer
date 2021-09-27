@@ -1,14 +1,10 @@
-﻿enableMention: '已启用@功能,当有人@你时你将会收到提醒'
-enableMentionError: '你的@功能已启用'
-disableMention: '你已关闭@功能,当有人@你时你将不会收到提醒'
-disableMentionError: '你的@功能已关闭'
+enableMention: '已启用@功能,当有人@你时你将会收到提醒'
+disableMention: '你的@功能已启用'
+enableMentionPlayer: '您已经激活了提及自己的可能性 %player% !'
+disableMentionPlayer: '您已取消提及您自己的可能性 %player% !'
 
-reload: '重载成功!'
-#重置的意思就是,把你服务器所有关了@功能的玩家名单重置
-clear: '请输入 "/notifier confirm" 来重置黑名单'
-confirm: '黑名单已重制!'
+reload: '插件加载成功完成!'
 
-confirmError: '确认超时,请重新输入 "/notifier clear".'
 permissionMessage: '你没有权限这么做'
 yourselfMention: '你不能@你自己'
 delayMention: '你刚刚已经@他了,请稍后重试以免打扰'
@@ -23,15 +19,19 @@ helpMessage: '
   %n
   %helpDelay%
   %helpEco%
+  •你必须阻止提及自己的可能性 &6%player_bloqued%
   %n
-  &3Commands :
   %n
-  &r- &7/notifier on&r/&7off &r| &7/notifier &8-> &r是否允许其他玩家@你'
+  &3订单 :
+  %n
+  &r- &7/notifier toggle &r| &7/notifier &8-> &r允许或不让所有玩家提及您
+  %n
+  &r- &7/notifier toggle {player} &8-> &r授权与否玩家提及您'
 
 helpAdmin: '
-  &r- &7/notifier reload &8-> &r重载插件
-  %n
-  &r- &7/notifier clear &8-> &r重置@黑名单.'
+  &r- &7/notifier reload &8-> &r重载插件'
 
 helpDelay: '• 每次@玩家需要间隔 &6%delay% 秒. %n'
 helpEco: '• 每次@将花费 &6%price% %symbol%&r. %n'
+helpInfoIgnore1: '人们'
+helpInfoIgnore2: '大家'
