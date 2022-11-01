@@ -44,8 +44,7 @@ public class ColorsUtils {
 		return ChatColor.translateAlternateColorCodes((char) '&', matcher(msg));
 	}
 
-	// Matcher find and replace
-
+	// Matchmaking find and replace
 	private static String matcher(String msg) {
 		Matcher matcher = PATTERN.matcher(msg);
 		while (matcher.find()) {
@@ -67,7 +66,6 @@ public class ColorsUtils {
 	}
 
 	// Color management for version <1.16
-
 	private static ChatColor fromRGB(int r, int g, int b) {
 		TreeMap<Integer, ChatColor> closest = new TreeMap<Integer, ChatColor>();
 		colorMap.forEach((color, set) -> {
@@ -80,7 +78,6 @@ public class ColorsUtils {
 	}
 
 	private static Map<ChatColor, ColorSet<Integer, Integer, Integer>> colorMap = new HashMap<ChatColor, ColorSet<Integer, Integer, Integer>>();
-
 	static {
 		colorMap.put(ChatColor.BLACK, new ColorSet<Integer, Integer, Integer>(0, 0, 0));
 		colorMap.put(ChatColor.DARK_BLUE, new ColorSet<Integer, Integer, Integer>(0, 0, 170));
@@ -122,7 +119,5 @@ public class ColorsUtils {
 		public B getBlue() {
 			return blue;
 		}
-
 	}
-
 }

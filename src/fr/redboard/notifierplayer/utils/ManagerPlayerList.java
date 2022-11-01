@@ -42,16 +42,15 @@ public class ManagerPlayerList {
 	}
 
 	// WrapperConfig
-
 	public List<String> listPlayer(String pName) {
 		return get().getStringList(pName);
 	}
 
 	public void playerSender(String pName, boolean bool) {
-		if (bool) { // ajouter
+		if (bool) {
 			get().set(pName, "ALL");
-		} else { // supprimer
-			get().set(pName, null); // hard delete player
+		} else {
+			get().set(pName, null);
 		}
 	}
 
@@ -91,5 +90,4 @@ public class ManagerPlayerList {
 		list.remove(str);
 		get().set(pName, list);
 	}
-
 }

@@ -42,11 +42,7 @@ public class CheckChat implements Listener {
 		for (int i = 0; i < messageList.length; i++) {
 			final Player pCaller = e.getPlayer(); // appellant
 			final String pluginName = config.getNamePlugin();
-
-			// set perm pCaller
 			permissionPlayer = setPermPlayer(pCaller);
-
-			// test everyone
 			if (ChatColor.stripColor(messageList[i]).equals(setPosSymbol("everyone"))) {
 				if (permissionPlayer >= 2)
 					everyone(e, messageList[i], 1, pCaller, pluginName);
@@ -54,20 +50,16 @@ public class CheckChat implements Listener {
 					everyone(e, messageList[i], 0, pCaller, pluginName);
 				}
 			}
-
-			// partie mention
 			for (Player pCall : Bukkit.getOnlinePlayers()) {
 				final String callName = pCall.getName(); // appeler
 				if (!ChatColor.stripColor(messageList[i].toLowerCase()).equals(setPosSymbol(callName.toLowerCase())))
 					continue;
-
 				final String pluginNameConvert = ColorsUtils.convert(pluginName);
 				if (permissionPlayer >= 1 || (!configPlayer.checkPlayerContain(pCall.toString(), "ALL")
 						&& !configPlayer.checkPlayerContain(pCall.toString(), pCaller.getName()))) {
 					if (permissionPlayer >= 1 || !playerTime.contains(callName)) {
 						if ((pCaller != pCall) || (config.getMYourSelf())) {
 							if (!isVanished(pCall) && pCaller.canSee(pCall)) {
-
 								if (config.getEcoUse()) {
 									if (ecoUse(pCaller, pluginNameConvert, e, callName, pluginName,
 											messageList[i]) == false)
@@ -80,17 +72,12 @@ public class CheckChat implements Listener {
 										config.getFormatMention() + "§r", ChatColor.stripColor(pCall.getDisplayName()),
 										callerName);
 								setMessage(e, messageList[i], mentionChange, mentionChangeNickName);
-
-								// additional additions
 								sendScreenDisplay(pCall, callerName, callName);
 								if (config.getActivSound())
 									playSound(pCall);
-
 								managerDelay(pCaller, callName);
-
 							} else
 								e.setMessage(e.getMessage().replace(messageList[i], callName));
-
 						} else
 							canceller("yourselfMention", pCaller, callName, e, messageList[i], pluginName);
 					} else
@@ -124,12 +111,10 @@ public class CheckChat implements Listener {
 	}
 
 	private void setMessage(AsyncPlayerChatEvent e, CharSequence messageListI, String strNoNick, String strYesNick) {
-		// voir pour nickname SI le réglage est en true dans config.yml
 		if (config.getNickname())
 			e.setMessage(e.getMessage().replace(messageListI, strYesNick));
 		else
 			e.setMessage(e.getMessage().replace(messageListI, strNoNick));
-
 	}
 
 	private void everyone(AsyncPlayerChatEvent e, CharSequence messageListI, int code, Player pCaller,
@@ -146,7 +131,6 @@ public class CheckChat implements Listener {
 			canceller("permissionMessage", pCaller, String.valueOf(messageListI), e, messageListI, pluginName);
 			e.setMessage(e.getMessage());
 		}
-
 	}
 
 	private void sendScreenDisplay(Player pCall, String callerName, String callName) {
@@ -170,7 +154,6 @@ public class CheckChat implements Listener {
 			pCaller.sendMessage(
 					pluginNameConvert + " " + ColorsUtils.convert(LanguageLoader.translationMap.get("paymentMessage"),
 							String.valueOf(price), config.getEcoSymbol().toString()));
-
 			vault.eco.withdrawPlayer(pCaller, price);
 			return true;
 		} else {

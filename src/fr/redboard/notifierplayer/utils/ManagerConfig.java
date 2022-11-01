@@ -32,7 +32,6 @@ public class ManagerConfig {
 		config = plugin.getConfig();
 		if (getEcoUse())
 			main.ecoTest2();
-
 		// initialize HashMap
 		getterTitle();
 		getterSound();
@@ -53,7 +52,6 @@ public class ManagerConfig {
 	}
 
 	// WrapperConfig
-
 	public String getFormatMention() {
 		return get().getString("formatting");
 	}
@@ -101,7 +99,6 @@ public class ManagerConfig {
 	}
 
 	// getter Language File
-
 	public String getLanguagePath(String path) {
 		return translateGet.get(path);
 	}
@@ -123,7 +120,6 @@ public class ManagerConfig {
 	}
 
 	// Getting additional additions
-
 	public boolean getActivTitle() {
 		return get().getBoolean("activTitle");
 	}
@@ -137,7 +133,6 @@ public class ManagerConfig {
 	}
 
 	// Getting everyone
-
 	public String getFormatEveryone() {
 		return get().getString("formattingEv");
 	}
@@ -168,5 +163,4 @@ public class ManagerConfig {
 	public String getEcoSymbol() {
 		return get().getString("ecoSymbol");
 	}
-
 }

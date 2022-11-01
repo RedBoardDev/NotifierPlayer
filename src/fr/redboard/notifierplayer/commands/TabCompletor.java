@@ -22,15 +22,7 @@ public class TabCompletor implements TabCompleter {
 			this.argumentsAdmin.add("help");
 			this.argumentsAdmin.add("reload");
 		}
-
-//		if (ManagerCmd.confirm) {
-//			this.argumentsAdmin.add("confirm");
-//		} else if (!ManagerCmd.confirm) {
-//			this.argumentsAdmin.remove("confirm");
-//		}
-
 		List<String> resultat = new ArrayList<>();
-
 		if (sender.hasPermission("notifier.admin") ||sender.isOp()) {
 			if (args.length == 1) {
 				for (String str : this.argumentsAdmin) {
@@ -40,7 +32,7 @@ public class TabCompletor implements TabCompleter {
 				}
 				return resultat;
 			}
-		}  else {
+		} else {
 			if (args.length == 1) {
 				for (String str : this.arguments1) {
 					if (str.toLowerCase().startsWith(args[0].toLowerCase())) {

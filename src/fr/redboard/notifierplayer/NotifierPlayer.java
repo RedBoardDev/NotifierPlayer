@@ -27,15 +27,12 @@ public class NotifierPlayer extends JavaPlugin {
     public File configPlayerFile;
     private FileConfiguration configPlayer;
 
-
-	// utils economy
 	private final Logger log = Logger.getLogger("Minecraft");
 	public Economy eco = null;
 	private ManagerPlayerList managerPlayerlist;
 
 	@Override
 	public void onEnable() {
-		// gestion playerYml
 		createPlayerYml();
 
 		saveDefaultConfig();
@@ -43,7 +40,6 @@ public class NotifierPlayer extends JavaPlugin {
 		managerPlayerlist = new ManagerPlayerList(this);
 		new LanguageLoader(this);
 		getCommand("notifier").setExecutor(new ManagerCmd(managerConfig, managerPlayerlist));
-//		getCommand("test").setExecutor(new testCmd(managerPlayerlist));
 		getCommand("notifier").setTabCompleter(new TabCompletor());
 		Bukkit.getPluginManager().registerEvents(new CheckChat(managerConfig, managerPlayerlist, this), this);
 		instance = this;
@@ -52,9 +48,7 @@ public class NotifierPlayer extends JavaPlugin {
 		int pluginId = 11283;
 		@SuppressWarnings("unused")
 		MetricsLite metricsLite = new MetricsLite(this, pluginId);
-
 		ecoTest();
-		
 		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 			 new PlaceHolder(managerPlayerlist).register();
 		}
@@ -62,7 +56,6 @@ public class NotifierPlayer extends JavaPlugin {
 	}
 
 	public void ecoTest2() {
-		// utils economy
 		if (!setupEconomy()) {
 			log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
 			getServer().getPluginManager().disablePlugin(this);
@@ -71,7 +64,6 @@ public class NotifierPlayer extends JavaPlugin {
 	}
 
 	public void ecoTest() {
-		// utils economy
 		if (managerConfig.getEcoUse()) {
 			if (!setupEconomy()) {
 				log.severe(
@@ -82,7 +74,6 @@ public class NotifierPlayer extends JavaPlugin {
 		}
 	}
 
-	// utils economy
 	private boolean setupEconomy() {
 		if (getServer().getPluginManager().getPlugin("Vault") == null) {
 			return false;
@@ -95,7 +86,6 @@ public class NotifierPlayer extends JavaPlugin {
 		return eco != null;
 	}
 	
-	// custom yml
 	public FileConfiguration getCustomConfig() {
         return this.configPlayer;
     }
@@ -106,7 +96,6 @@ public class NotifierPlayer extends JavaPlugin {
         	configPlayerFile.getParentFile().mkdirs();
             saveResource("PlayerList.yml", false);
          }
-
         configPlayer= new YamlConfiguration();
         try {
         	configPlayer.load(configPlayerFile);
