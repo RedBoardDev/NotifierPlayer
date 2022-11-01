@@ -1,0 +1,37 @@
+enableMention: 'Aktivovali ste možnosť zmienky o sebe!'
+disableMention: 'Deaktivovali ste možnosť zmienky o sebe!'
+enableMentionPlayer: 'Aktivovali ste možnosť uviesť sa %player% !'
+disableMentionPlayer: 'Deaktivovali ste možnosť uviesť sa za %player% !'
+
+reload: 'Načítanie doplnku je úspešne dokončené!'
+
+permissionMessage: 'Na to nemáte povolenie.'
+yourselfMention: 'Nemôžete sa spomenúť!'
+delayMention: 'Tento hráč bol už spomenutý pred krátkym časom.'
+playerListError: 'Tento hráč neprijíma odporúčania.'
+
+enoughMoney: 'Nemáte dostatok peňazí na to, aby ste sa o niekom zmienili.'
+paymentMessage: 'Musíte zaplatiť %price% %symbol% pre spomenúť tohto hráča.'
+
+# %n za návrat na linku
+helpMessage: '
+  • Uveďte niekoho aby ho upozornil na rozhovor %mentionFormat%&r !
+  %n
+  %helpDelay%
+  %helpEco%
+  • Musíte zablokovať možnosť spomenúť sa na seba &6%player_bloqued%
+  %n
+  %n
+  &Objednávky :
+  %n
+  &r- &7/notifier toggle &r| &7/notifier &8-> &rdovoľte alebo nie všetkým hráčom, aby vás spomenuli
+  %n
+  &r- &7/notifier toggle {player} &8-> &rsplnomocnite hráča alebo nie, aby sa o vás zmienil'
+
+helpAdmin: '
+  &r- &7/notifier reload &8-> &rZnovu načítajte konfiguráciu doplnku a jazykové súbory.'
+
+helpDelay: '• Existuje &6%delay% sekúnd &roneskorenie medzi každou zmienkou o rovnakom hráčovi. %n'
+helpEco: '• Každá zmienka vás bude stáť &6%price% %symbol%&r. %n'
+helpInfoIgnore1: 'Ľudia'
+helpInfoIgnore2: 'Všetci'
