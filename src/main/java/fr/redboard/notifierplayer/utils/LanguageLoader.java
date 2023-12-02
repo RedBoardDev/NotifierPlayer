@@ -13,42 +13,48 @@ import fr.redboard.notifierplayer.NotifierPlayer;
 import static org.bukkit.Bukkit.getServer;
 
 public class LanguageLoader {
+    private static final HashMap<String, String> translationMap = new HashMap<>();
 
-    public static HashMap<String, String> translationMap = new HashMap<>();
-
-    public LanguageLoader(NotifierPlayer plugin) throws Error { // plutot load chaque fichier yml trouvé dans languages/
-        File languageDirectory = new File(plugin.getDataFolder(), "languages/");
-        File test = new File(plugin.getDataFolder(), "testt/");
-        File defaultLanguageFile = new File(plugin.getDataFolder(), "languages/en_US.yml");
-        File File_fr_FR = new File(plugin.getDataFolder(), "languages/fr_FR.yml");
-        File File_de_DE = new File(plugin.getDataFolder(), "languages/de_DE.yml");
-
-        if (!test.exists() || !test.isDirectory()) {
-            throw new Error("testt/ n'existe pas ou n'est pas un répertoire.");
+    public static String getTranslation(String key) {
+        if (!translationMap.containsKey(key)) {
+            return "";
         }
+        return translationMap.get(key);
+    }
 
-        if (!languageDirectory.isDirectory()) {
-            languageDirectory.mkdir();
+    private static File getLanguageDirectory(NotifierPlayer plugin, String directoryName) {
+        File languageDirectory = new File(plugin.getDataFolder(), directoryName);
 
-            if (!defaultLanguageFile.exists() || !File_fr_FR.exists() || !File_de_DE.exists()) {
-                defaultLanguageFile.getParentFile().mkdirs();
-                plugin.saveResource("languages/en_US.yml", false);
-                plugin.saveResource("languages/fr_FR.yml", false);
-                plugin.saveResource("languages/de_DE.yml", false);
-            }
+        if (!languageDirectory.exists() || !languageDirectory.isDirectory()) {
+            throw new Error(directoryName + " do not exist or can not be found in plugins/");
         }
+        return languageDirectory;
+    }
 
-        if (plugin.getConfig().getString("locale") != null && !plugin.getConfig().getString("locale").equals("en_US")) {
-            FileConfiguration translations = YamlConfiguration.loadConfiguration(
-                    new File(plugin.getDataFolder(), "languages/" + plugin.getConfig().getString("locale") + ".yml"));
-            for (String translation : translations.getKeys(false)) {
-                translationMap.put(translation, translations.getString(translation));
-            }
+    public LanguageLoader(NotifierPlayer plugin) throws Error {
+        String directoryName = "languages/";
+        File languageDirectory = getLanguageDirectory(plugin, directoryName);
+
+        String locale;
+        if (plugin.getConfig().getString("locale") == null) {
+            locale = "en_US";
         } else {
-            FileConfiguration translations = YamlConfiguration.loadConfiguration(defaultLanguageFile);
+            locale = plugin.getConfig().getString("locale");
+        }
+        locale = locale + ".yml";
+
+        File localeFile = new File(languageDirectory, locale);
+        if (!localeFile.exists() || !localeFile.isFile()) {
+            throw new Error("The language file " + locale + " does not exist in the language directory.");
+        }
+
+        try {
+            FileConfiguration translations = YamlConfiguration.loadConfiguration(localeFile);
             for (String translation : translations.getKeys(false)) {
                 translationMap.put(translation, translations.getString(translation));
             }
+        } catch (Exception e) {
+            throw new Error("Error while loading the language file " + locale + " in the language directory.");
         }
     }
 }

@@ -33,10 +33,10 @@ public class NotifierPlayer extends JavaPlugin {
             createPlayerYml();
             saveDefaultConfig();
 
-            ManagerConfig managerConfig = new ManagerConfig(this, this);
-            ManagerPlayerList managerPlayerlist = new ManagerPlayerList(this);
-
             new LanguageLoader(this);
+
+            ManagerConfig managerConfig = new ManagerConfig(this);
+            ManagerPlayerList managerPlayerlist = new ManagerPlayerList(this);
 
             getCommand("notifier").setExecutor(new ManagerCmd(managerConfig, managerPlayerlist));
             getCommand("notifier").setTabCompleter(new TabCompletor());

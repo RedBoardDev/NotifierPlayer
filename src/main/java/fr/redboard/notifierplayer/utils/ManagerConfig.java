@@ -14,16 +14,12 @@ public class ManagerConfig {
 
     private final Plugin plugin;
     private FileConfiguration config;
-    private HashMap<String, String> translateGet;
-
     HashMap<String, String> hMapTitle = new HashMap<>();
     HashMap<String, String> hMapSound = new HashMap<>();
-    private NotifierPlayer main;
     HashMap<String, String> hMapSoundEveryone = new HashMap<>();
 
-    public ManagerConfig(Plugin plugin, NotifierPlayer notifierPlayer) {
+    public ManagerConfig(Plugin plugin) {
         this.plugin = plugin;
-        this.main = notifierPlayer;
         reload();
     }
 
@@ -36,7 +32,6 @@ public class ManagerConfig {
         getterTitle();
         getterSound();
         getterSoundEv();
-        translateGet = LanguageLoader.translationMap;
     }
 
     public void save() {
@@ -100,7 +95,7 @@ public class ManagerConfig {
 
     // getter Language File
     public String getLanguagePath(String path) {
-        return translateGet.get(path);
+        return LanguageLoader.getTranslation(path);
     }
 
     public boolean getErrorAction() {
@@ -109,10 +104,7 @@ public class ManagerConfig {
 
     public boolean getPosSymbol() {
         String posString = get().getString("posSymbol");
-        if (posString.equalsIgnoreCase("before"))
-            return false;
-        else
-            return true;
+        return !posString.equalsIgnoreCase("before");
     }
 
     public boolean getMYourSelf() {
@@ -150,10 +142,7 @@ public class ManagerConfig {
 
     // Getting Economy
     public boolean getEcoUse() {
-        if (get().getBoolean("EcoUse"))
-            return true;
-        else
-            return false;
+        return get().getBoolean("EcoUse");
     }
 
     public double getEcoPrice() {
