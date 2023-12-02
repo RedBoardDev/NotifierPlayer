@@ -14,6 +14,18 @@ import static org.bukkit.Bukkit.getServer;
 
 public class LanguageLoader {
     private static final HashMap<String, String> translationMap = new HashMap<>();
+    private static File languageDirectory;
+
+    public LanguageLoader(NotifierPlayer plugin) throws Error {
+        String directoryName = "languages/";
+        languageDirectory = getLanguageDirectory(plugin, directoryName);
+
+        loadLanguageData(plugin);
+    }
+
+    public static void reload() {
+        loadLanguageData(NotifierPlayer.instance);
+    }
 
     public static String getTranslation(String key) {
         if (!translationMap.containsKey(key)) {
@@ -31,10 +43,7 @@ public class LanguageLoader {
         return languageDirectory;
     }
 
-    public LanguageLoader(NotifierPlayer plugin) throws Error {
-        String directoryName = "languages/";
-        File languageDirectory = getLanguageDirectory(plugin, directoryName);
-
+    private static FileConfiguration loadLanguageFile(NotifierPlayer plugin) {
         String locale;
         if (plugin.getConfig().getString("locale") == null) {
             locale = "en_US";
@@ -48,13 +57,27 @@ public class LanguageLoader {
             throw new Error("The language file " + locale + " does not exist in the language directory.");
         }
 
+        FileConfiguration translations;
         try {
-            FileConfiguration translations = YamlConfiguration.loadConfiguration(localeFile);
+            translations = YamlConfiguration.loadConfiguration(localeFile);
+        } catch (Exception e) {
+            throw new Error("Error while loading the language file " + locale + " in the language directory.");
+        }
+        return translations;
+    }
+
+    private static void loadLanguageData(NotifierPlayer plugin) {
+        String directoryName = "languages/";
+        languageDirectory = getLanguageDirectory(plugin, directoryName);
+
+        translationMap.clear();
+        try {
+            FileConfiguration translations = loadLanguageFile(plugin);
             for (String translation : translations.getKeys(false)) {
                 translationMap.put(translation, translations.getString(translation));
             }
         } catch (Exception e) {
-            throw new Error("Error while loading the language file " + locale + " in the language directory.");
+            throw new Error("Error while loading the language file in the language directory.");
         }
     }
 }

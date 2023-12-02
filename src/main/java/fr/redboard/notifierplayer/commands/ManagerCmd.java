@@ -16,7 +16,6 @@ import fr.redboard.notifierplayer.utils.ManagerPlayerList;
 
 public class ManagerCmd implements CommandExecutor {
 
-    public static boolean confirm;
     private final ManagerConfig config;
     private final ManagerPlayerList configPlayer;
 
@@ -32,11 +31,9 @@ public class ManagerCmd implements CommandExecutor {
                 return false;
             Player p = (Player) sender;
             String pName = p.toString();
-//			String pName = p.getAddress().toString(); A test (online/crack mode)
             String namePlugin = ColorsUtils.convert(config.getNamePlugin());
             if (args.length >= 1) {
                 switch (args[0]) {
-
                     case "toggle": // IN DEVELOPEMENT
                         if (args.length == 1) {
                             // on/off all -> partie 1
@@ -77,9 +74,8 @@ public class ManagerCmd implements CommandExecutor {
                         if (p.hasPermission("notifier.admin")) {
                             config.reload();
                             configPlayer.reload();
+                            LanguageLoader.reload();
                             sendMessage(namePlugin, "reload", p);
-                            //new LanguageLoader(NotifierPlayer.instance); // TODO METHOD RELOAD
-//							sendMessage(namePlugin, "reloadError", p); // faire le message d'erreur dans en_US.yml + gestion error
                         } else
                             sendMessage(namePlugin, "permissionMessage", p);
                         break;

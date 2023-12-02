@@ -22,24 +22,24 @@ public class TabCompletor implements TabCompleter {
             this.argumentsAdmin.add("help");
             this.argumentsAdmin.add("reload");
         }
-        List<String> resultat = new ArrayList<>();
+        List<String> result = new ArrayList<>();
         if (sender.hasPermission("notifier.admin") ||sender.isOp()) {
             if (args.length == 1) {
                 for (String str : this.argumentsAdmin) {
                     if (str.toLowerCase().startsWith(args[0].toLowerCase())) {
-                        resultat.add(str);
+                        result.add(str);
                     }
                 }
-                return resultat;
+                return result;
             }
         } else {
             if (args.length == 1) {
                 for (String str : this.arguments1) {
                     if (str.toLowerCase().startsWith(args[0].toLowerCase())) {
-                        resultat.add(str);
+                        result.add(str);
                     }
                 }
-                return resultat;
+                return result;
             }
         }
         return null;
