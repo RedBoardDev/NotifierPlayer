@@ -14,22 +14,30 @@ public class ColorsUtils {
 
     private static final Pattern PATTERN = Pattern.compile("\\{#[a-fA-F0-9]{6}\\}");
 
+    public static String replaceAndConvert(String msg, Map<String, String> replacements) {
+        for (Map.Entry<String, String> entry : replacements.entrySet()) {
+            msg = msg.replaceAll(entry.getKey(), entry.getValue());
+        }
+        return convert(msg);
+    }
+
     public static String convert(String msg) {
         msg = String.format(msg);
         return ChatColor.translateAlternateColorCodes((char) '&', matcher(msg));
     }
 
-    public static String convert(String msg, String replace1) {
-        msg = String.format(msg.replaceAll("%player%", replace1));
-        return ChatColor.translateAlternateColorCodes((char) '&', matcher(msg));
-    }
 
-    public static String convert(String msg, String replace1, String replace2) {
-        msg = String.format(msg.replaceAll("%player%", replace1).replaceAll("%caller%", replace2)
-                .replaceAll("%price%", replace1).replace("%symbol%", replace2));
-        return ChatColor.translateAlternateColorCodes((char) '&', matcher(msg));
-    }
-
+//    public static String convert(String msg, String replace1) {
+//        msg = String.format(msg.replaceAll("%player%", replace1));
+//        return ChatColor.translateAlternateColorCodes((char) '&', matcher(msg));
+//    }
+//
+//    public static String convert(String msg, String replace1, String replace2) {
+//        msg = String.format(msg.replaceAll("%player%", replace1).replaceAll("%caller%", replace2)
+//                .replaceAll("%price%", replace1).replace("%symbol%", replace2));
+//        return ChatColor.translateAlternateColorCodes((char) '&', matcher(msg));
+//    }
+//
 
     public static String convertHelp(String msg) {
         msg = String.format(msg.replaceAll("%n", System.lineSeparator()).replaceAll("%player%", "player")

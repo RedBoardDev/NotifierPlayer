@@ -2,6 +2,7 @@ package fr.redboard.notifierplayer.listeners;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,20 +38,20 @@ public class CheckChat implements Listener {
     @EventHandler
     public void onPreSendMessage(AsyncPlayerChatEvent e) {
         String[] messageList = e.getMessage().split(" ");
-        for (int i = 0; i < messageList.length; i++) {
+        for (String message : messageList) {
             final Player pCaller = e.getPlayer(); // appellant
             final String pluginName = config.getNamePlugin();
             permissionPlayer = setPermPlayer(pCaller);
-            if (ChatColor.stripColor(messageList[i]).equals(setPosSymbol("everyone"))) {
+            if (ChatColor.stripColor(message).equals(setPosSymbol("everyone"))) {
                 if (permissionPlayer >= 2)
-                    everyone(e, messageList[i], 1, pCaller, pluginName);
+                    everyone(e, message, 1, pCaller, pluginName);
                 else {
-                    everyone(e, messageList[i], 0, pCaller, pluginName);
+                    everyone(e, message, 0, pCaller, pluginName);
                 }
             }
             for (Player pCall : Bukkit.getOnlinePlayers()) {
                 final String callName = pCall.getName(); // appeler
-                if (!ChatColor.stripColor(messageList[i].toLowerCase()).equals(setPosSymbol(callName.toLowerCase())))
+                if (!ChatColor.stripColor(message.toLowerCase()).equals(setPosSymbol(callName.toLowerCase())))
                     continue;
                 final String pluginNameConvert = ColorsUtils.convert(pluginName);
                 if (permissionPlayer >= 1 || (!configPlayer.checkPlayerContain(pCall.toString(), "ALL")
@@ -59,29 +60,31 @@ public class CheckChat implements Listener {
                         if ((pCaller != pCall) || (config.getMYourSelf())) {
                             if (!isVanished(pCall) && pCaller.canSee(pCall)) {
                                 if (config.getEcoUse()) {
-                                    if (ecoUse(pCaller, pluginNameConvert, e, callName, pluginName,
-                                            messageList[i]) == false)
+                                    if (ecoUse(pCaller, pluginNameConvert, e, callName, pluginName, message) == false)
                                         break;
                                 }
                                 final String callerName = pCaller.getName();
-                                final String mentionChange = ColorsUtils.convert(config.getFormatMention() + "§r",
-                                        callName, callerName);
-                                final String mentionChangeNickName = ColorsUtils.convert(
-                                        config.getFormatMention() + "§r", ChatColor.stripColor(pCall.getDisplayName()),
-                                        callerName);
-                                setMessage(e, messageList[i], mentionChange, mentionChangeNickName);
+                                final String mentionChange = ColorsUtils.replaceAndConvert(config.getFormatMention() + "§r", Map.of(
+                                                "%player%", callName,
+                                                "%caller%", callerName
+                                        ));
+                                final String mentionChangeNickName = ColorsUtils.replaceAndConvert(config.getFormatMention() + "§r", Map.of(
+                                                "%player%", ChatColor.stripColor(pCall.getDisplayName()),
+                                                "%caller%", callerName
+                                        ));
+                                setMessage(e, message, mentionChange, mentionChangeNickName);
                                 sendScreenDisplay(pCall, callerName, callName);
-                                if (config.getActivSound())
+                                if (config.getActiveSound())
                                     playSound(pCall);
                                 managerDelay(pCaller, callName);
                             } else
-                                e.setMessage(e.getMessage().replace(messageList[i], callName));
+                                e.setMessage(e.getMessage().replace(message, callName));
                         } else
-                            canceller("yourselfMention", pCaller, callName, e, messageList[i], pluginName);
+                            canceller("yourselfMention", pCaller, callName, e, message, pluginName);
                     } else
-                        canceller("delayMention", pCaller, callName, e, messageList[i], pluginName);
+                        canceller("delayMention", pCaller, callName, e, message, pluginName);
                 } else
-                    canceller("playerListError", pCaller, callName, e, messageList[i], pluginName);
+                    canceller("playerListError", pCaller, callName, e, message, pluginName);
             }
         }
     }
@@ -122,7 +125,7 @@ public class CheckChat implements Listener {
             e.setMessage(e.getMessage().replace(messageListI, mentionChange));
             for (Player p : Bukkit.getOnlinePlayers()) {
                 sendScreenDisplay(p, "everyone", "everyone");
-                if (config.getActivSound())
+                if (config.getActiveSound())
                     playSoundEv(p);
             }
         } else {
@@ -132,9 +135,9 @@ public class CheckChat implements Listener {
     }
 
     private void sendScreenDisplay(Player pCall, String callerName, String callName) {
-        if (config.getActivTitle())
+        if (config.getActiveTitle())
             sendTitle(callName, callerName, pCall);
-        if (config.getActivActionBar())
+        if (config.getActiveActionBar())
             sendActionBar(callName, callerName, pCall);
     }
 
@@ -177,8 +180,13 @@ public class CheckChat implements Listener {
     }
 
     private void sendTitle(String callName, String callerName, Player pCall) {
-        pCall.sendTitle(ColorsUtils.convert(gethMapTitle("mainTitle"), callName, callerName),
-                ColorsUtils.convert(gethMapTitle("subTitle"), callName, callerName),
+        Map<String, String> replacements = Map.of(
+                "%player%", callName,
+                "%caller%", callerName
+        );
+
+        pCall.sendTitle(ColorsUtils.replaceAndConvert(gethMapTitle("mainTitle"), replacements),
+                ColorsUtils.replaceAndConvert(gethMapTitle("subTitle"),replacements),
                 Integer.parseInt(gethMapTitle("fadeIn")), Integer.parseInt(gethMapTitle("stay")),
                 Integer.parseInt(gethMapTitle("fadeOut")));
     }
@@ -202,8 +210,12 @@ public class CheckChat implements Listener {
     }
 
     private void sendActionBar(String callName, String callerName, Player pCall) {
+        Map<String, String> replacements = Map.of(
+                "%player%", callName,
+                "%caller%" , callerName
+        );
         pCall.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                new TextComponent(ColorsUtils.convert(config.getActionBar(), callName, callerName)));
+                new TextComponent(ColorsUtils.replaceAndConvert(config.getActionBar(), replacements)));
     }
 
     private boolean isVanished(Player player) {

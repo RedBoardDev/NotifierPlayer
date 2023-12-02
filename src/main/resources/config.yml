@@ -76,7 +76,7 @@ ecoSymbol: "$"
 
 ################ ADDITIONAL ADDITIONS ################
 
-activTitle: true
+activeTitle: true
 Title:
   mainTitle: "&cNotifier &l&f| {#66D22C}%caller%"
   subTitle: "&2A player mentioned you in the chat!"
@@ -84,10 +84,10 @@ Title:
   stay: 70
   fadeOut: 20
 
-activActionBar: true
+activeActionBar: true
 ActionBar: "{#C9F55B}Player &a%caller% {#34C1C8}mentioned you !"
 
-activSound: true
+activeSound: true
 Sound:
   # List of available sounds : https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
   type: BLOCK_NOTE_BLOCK_IRON_XYLOPHONE

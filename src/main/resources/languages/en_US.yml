@@ -19,7 +19,7 @@ helpMessage: '
   %n
   %helpDelay%
   %helpEco%
-  • You have to block the possibility of mentioning yourself to &6%player_bloqued%
+  • You have block the possibility of mentioning yourself for &6%player_bloqued%
   %n
   %n
   &3Commands :
@@ -31,7 +31,7 @@ helpMessage: '
 helpAdmin: '
   &r- &7/notifier reload &8-> &rReload the plugin config as well as the language files.'
 
-helpDelay: '• There is a &6%delay% second delay between each mention of the same player. %n'
+helpDelay: '• There is a &6%delay% second &rdelay between each mention of the same player. %n'
 helpEco: '• Each mention will cost you &6%price% %symbol%&r. %n'
 helpInfoIgnore1: 'Anybody'
 helpInfoIgnore2: 'Everybody'

@@ -9,8 +9,16 @@ import fr.redboard.notifierplayer.utils.LanguageLoader;
 
 public class CmdHelp {
 
-    public static void sendHelp(Player p, String namePlugin, String mentionFormat, int delay, double price,
-                                String symbol, boolean ecoBool, boolean delayBool, List<String> listPlayer) {
+    public static void sendHelp(
+            Player p,
+            String namePlugin,
+            String mentionFormat,
+            int delay,
+            double price,
+            String symbol,
+            boolean ecoBool,
+            boolean delayBool,
+            List<String> listPlayer) {
         p.sendMessage("§c§7§m                     §7[" + namePlugin + "§7 help§7]§7§m                     §7");
         String helpDelay = LanguageLoader.translationMap.get("helpDelay");
         String helpEco = LanguageLoader.translationMap.get("helpEco");

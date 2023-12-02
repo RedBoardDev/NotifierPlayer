@@ -1,6 +1,7 @@
 package fr.redboard.notifierplayer.commands;
 
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -77,7 +78,7 @@ public class ManagerCmd implements CommandExecutor {
                             config.reload();
                             configPlayer.reload();
                             sendMessage(namePlugin, "reload", p);
-                            new LanguageLoader(NotifierPlayer.instance);
+                            //new LanguageLoader(NotifierPlayer.instance); // TODO METHOD RELOAD
 //							sendMessage(namePlugin, "reloadError", p); // faire le message d'erreur dans en_US.yml + gestion error
                         } else
                             sendMessage(namePlugin, "permissionMessage", p);
@@ -174,7 +175,10 @@ public class ManagerCmd implements CommandExecutor {
     }
 
     private void sendMessage(String namePlugin, String path, Player p, String pName) {
-        p.sendMessage(namePlugin + " " + ColorsUtils.convert(config.getLanguagePath(path), pName));
+        Map<String, String> replacements = Map.of(
+                "%player%", pName
+        );
+        p.sendMessage(namePlugin + " " + ColorsUtils.replaceAndConvert(config.getLanguagePath(path), replacements));
     }
 
 //	private void runClear() {

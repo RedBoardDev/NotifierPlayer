@@ -61,9 +61,9 @@ public class ManagerConfig {
     }
 
     public void getterTitle() {
-        ConfigurationSection getsection = get().getConfigurationSection("Title");
-        for (String translation : getsection.getKeys(false)) {
-            hMapTitle.put(translation, getsection.getString(translation));
+        ConfigurationSection getSection = get().getConfigurationSection("Title");
+        for (String translation : getSection.getKeys(false)) {
+            hMapTitle.put(translation, getSection.getString(translation));
         }
     }
 
@@ -72,9 +72,9 @@ public class ManagerConfig {
     }
 
     public void getterSound() {
-        ConfigurationSection getsection = get().getConfigurationSection("Sound");
-        for (String translation : getsection.getKeys(false)) {
-            hMapSound.put(translation, getsection.getString(translation));
+        ConfigurationSection getSection = get().getConfigurationSection("Sound");
+        for (String translation : getSection.getKeys(false)) {
+            hMapSound.put(translation, getSection.getString(translation));
         }
     }
 
@@ -120,16 +120,16 @@ public class ManagerConfig {
     }
 
     // Getting additional additions
-    public boolean getActivTitle() {
-        return get().getBoolean("activTitle");
+    public boolean getActiveTitle() {
+        return get().getBoolean("activeTitle");
     }
 
-    public boolean getActivActionBar() {
-        return get().getBoolean("activActionBar");
+    public boolean getActiveActionBar() {
+        return get().getBoolean("activeActionBar");
     }
 
-    public boolean getActivSound() {
-        return get().getBoolean("activSound");
+    public boolean getActiveSound() {
+        return get().getBoolean("activeSound");
     }
 
     // Getting everyone
@@ -138,9 +138,9 @@ public class ManagerConfig {
     }
 
     public void getterSoundEv() {
-        ConfigurationSection getsection = get().getConfigurationSection("SoundEv");
-        for (String translation : getsection.getKeys(false)) {
-            hMapSoundEveryone.put(translation, getsection.getString(translation));
+        ConfigurationSection getSection = get().getConfigurationSection("SoundEv");
+        for (String translation : getSection.getKeys(false)) {
+            hMapSoundEveryone.put(translation, getSection.getString(translation));
         }
     }
 

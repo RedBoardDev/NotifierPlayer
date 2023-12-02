@@ -29,26 +29,32 @@ public class NotifierPlayer extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        createPlayerYml();
+        try {
+            createPlayerYml();
+            saveDefaultConfig();
 
-        saveDefaultConfig();
-        ManagerConfig managerConfig = new ManagerConfig(this, this);
-        ManagerPlayerList managerPlayerlist = new ManagerPlayerList(this);
-        new LanguageLoader(this);
-        getCommand("notifier").setExecutor(new ManagerCmd(managerConfig, managerPlayerlist));
-        getCommand("notifier").setTabCompleter(new TabCompletor());
-        Bukkit.getPluginManager().registerEvents(new CheckChat(managerConfig, managerPlayerlist, this), this);
-        instance = this;
+            ManagerConfig managerConfig = new ManagerConfig(this, this);
+            ManagerPlayerList managerPlayerlist = new ManagerPlayerList(this);
 
-        // Metrics bStats
-        int pluginId = 11283;
-        @SuppressWarnings("unused")
-        MetricsLite metricsLite = new MetricsLite(this, pluginId);
-        //ecoTest();
-        //if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-        //    new PlaceHolder(managerPlayerlist).register();
-        //}
+            new LanguageLoader(this);
 
+            getCommand("notifier").setExecutor(new ManagerCmd(managerConfig, managerPlayerlist));
+            getCommand("notifier").setTabCompleter(new TabCompletor());
+            Bukkit.getPluginManager().registerEvents(new CheckChat(managerConfig, managerPlayerlist, this), this);
+            instance = this;
+
+            // Metrics bStats
+            int pluginId = 11283;
+            @SuppressWarnings("unused")
+            MetricsLite metricsLite = new MetricsLite(this, pluginId);
+            //ecoTest();
+            //if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            //    new PlaceHolder(managerPlayerlist).register();
+            //}
+        } catch (Error e) {
+            e.printStackTrace();
+            this.getPluginLoader().disablePlugin(this);
+        }
     }
 
     public FileConfiguration getCustomConfig() {
@@ -58,8 +64,9 @@ public class NotifierPlayer extends JavaPlugin {
     private void createPlayerYml() {
         configPlayerFile = new File(getDataFolder(), "PlayerList.yml");
         if (!configPlayerFile.exists()) {
-            configPlayerFile.getParentFile().mkdirs();
-            saveResource("PlayerList.yml", false);
+            if (configPlayerFile.getParentFile().mkdirs()) {
+                saveResource("PlayerList.yml", false);
+            }
         }
         configPlayer= new YamlConfiguration();
         try {
