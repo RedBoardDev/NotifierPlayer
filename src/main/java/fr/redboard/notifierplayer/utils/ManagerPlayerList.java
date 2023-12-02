@@ -28,7 +28,6 @@ public class ManagerPlayerList {
         try {
             main.getCustomConfig().save(main.configPlayerFile);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -55,10 +54,7 @@ public class ManagerPlayerList {
     }
 
     public boolean checkPlayerExist(String pName) {
-        if (get().get(pName) == null)
-            return false;
-        else
-            return true;
+        return get().get(pName) != null;
     }
 
     public List<?> getPlayerStatus(String pName) {
@@ -66,17 +62,11 @@ public class ManagerPlayerList {
     }
 
     public boolean checkPlayerList(String pName) {
-        if (get().getStringList(pName).isEmpty())
-            return false;
-        else
-            return true;
+        return !get().getStringList(pName).isEmpty();
     }
 
     public boolean checkPlayerContain(String pName, String str) {
-        if (get().getStringList(pName).contains(str))
-            return true;
-        else
-            return false;
+        return get().getStringList(pName).contains(str);
     }
 
     public void addStrPlayer(String pName, String str) {

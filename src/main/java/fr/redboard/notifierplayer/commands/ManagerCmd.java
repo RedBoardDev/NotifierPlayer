@@ -26,144 +26,97 @@ public class ManagerCmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String msg, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("notifier")) {
-            if (!(sender instanceof Player))
-                return false;
-            Player p = (Player) sender;
-            String pName = p.toString();
-            String namePlugin = ColorsUtils.convert(config.getNamePlugin());
-            if (args.length >= 1) {
-                switch (args[0]) {
-                    case "toggle": // IN DEVELOPEMENT
-                        if (args.length == 1) {
-                            // on/off all -> partie 1
-                            if (configPlayer.checkPlayerExist(pName)) { // check if player exist
-                                if (configPlayer.checkPlayerContain(pName, "ALL")) { // check if ALL exist in player
-                                    sendMessage(namePlugin, "enableMention", p);
-                                    configPlayer.removeStrPlayer(pName, "ALL"); // remove all for player
-                                } else { // if all not exist to player
-                                    sendMessage(namePlugin, "disableMention", p);
-                                    configPlayer.addStrPlayer(pName, "ALL"); // add all for player
-                                }
-                            } else { // if player not exist
-                                sendMessage(namePlugin, "disableMention", p);
-                                configPlayer.addStrPlayer(pName, "ALL"); // add all for player
-                            }
+        if (!cmd.getName().equalsIgnoreCase("notifier"))
+            return false;
+        if (!(sender instanceof Player p))
+            return false;
+        String pName = p.toString();
+        String namePlugin = ColorsUtils.convert(config.getNamePlugin());
 
-                        } else if (args.length >= 2) {
-                            String arsg1 = args[1];
-                            // on/off player -> partie 2
-                            System.out.println(arsg1);
-                            if (configPlayer.checkPlayerExist(pName)) { // check if player exist
-                                if (configPlayer.checkPlayerContain(pName, arsg1)) { // check if args1 not exist
-                                    sendMessage(namePlugin, "enableMentionPlayer", p, arsg1);
-                                    configPlayer.removeStrPlayer(pName, arsg1); // remove args1 for player
-                                } else {
-                                    sendMessage(namePlugin, "disableMentionPlayer", p, arsg1);
-                                    configPlayer.addStrPlayer(pName, arsg1); // add args1 for player
-                                }
-                            } else { // if all not exist to player
-                                sendMessage(namePlugin, "disableMentionPlayer", p, arsg1);
-                                configPlayer.addStrPlayer(pName, arsg1); // add args1 for player
-                            }
-                        }
-
-                        break;
-
-                    case "reload":
-                        if (p.hasPermission("notifier.admin")) {
-                            config.reload();
-                            configPlayer.reload();
-                            LanguageLoader.reload();
-                            sendMessage(namePlugin, "reload", p);
-                        } else
-                            sendMessage(namePlugin, "permissionMessage", p);
-                        break;
-
-//				case "clear": // a refaire par player ?
-//					if(args.length >= 2) {
-//						if (p.hasPermission("notifier.admin")) {
-//							if (configPlayer.checkPlayerList(args[1])) {
-//								confirm = true;
-//								runClear(); // check and remake
-//								sendMessage(namePlugin, "clear", p); //modif message
-//							} // else
-//								//message qui dit que le joueur n'existe pos
-//						} else
-//							sendMessage(namePlugin, "permissionMessage", p);
-//					}
-//					break;
-
-//				case "confirm": // a refaire par player
-//					if (p.hasPermission("notifier.admin")) {
-//						if (confirm) {
-//							confirm = false;
-//							playerList.clear();
-//							sendMessage(namePlugin, "confirm", p);
-//						} else
-//							sendMessage(namePlugin, "confirmError", p);
-//					}
-//					break;
-
-                    case "help":
-                        String mentionFormat = ColorsUtils.convertHelp(config.getFormatMention());
-                        int delay = config.getDelay();
-                        double price = config.getEcoPrice();
-                        String symbol = config.getEcoSymbol().toString();
-                        boolean delayBool;
-                        if (config.getDelay() > 0)
-                            delayBool = true;
-                        else
-                            delayBool = false;
-
-                        List<String> listPlayer = configPlayer.listPlayer(pName);
-                        final String helpInfoIgnore1 = config.getLanguagePath("helpInfoIgnore1");
-                        final String helpInfoIgnore2 = config.getLanguagePath("helpInfoIgnore2");
-                        if (listPlayer.isEmpty()) {
-                            listPlayer.clear();
-                            listPlayer.add(helpInfoIgnore1);
-                        } else if (listPlayer.contains("ALL")) {
-                            listPlayer.clear();
-                            listPlayer.add(helpInfoIgnore2);
-                        }
-
-                        CmdHelp.sendHelp(p, namePlugin, mentionFormat, delay, price, symbol, config.getEcoUse(), delayBool,
-                                listPlayer);
-                        break;
-
-                    default:
-                        // on/off all -> partie 1
-                        if (configPlayer.checkPlayerExist(pName)) { // check if player exist
-                            if (configPlayer.checkPlayerContain(pName, "ALL")) { // check if ALL exist in player
-                                sendMessage(namePlugin, "enableMention", p);
-                                configPlayer.removeStrPlayer(pName, "ALL"); // remove all for player
-                            } else { // if all not exist to player
-                                sendMessage(namePlugin, "disableMention", p);
-                                configPlayer.addStrPlayer(pName, "ALL"); // add all for player
-                            }
-                        } else { // if player not exist
-                            sendMessage(namePlugin, "disableMention", p);
-                            configPlayer.addStrPlayer(pName, "ALL"); // add all for player
-                        }
-                }
-            } else {
-                // on/off all -> partie 1
-                if (configPlayer.checkPlayerExist(pName)) { // check if player exist
-                    if (configPlayer.checkPlayerContain(pName, "ALL")) { // check if ALL exist in player
-                        sendMessage(namePlugin, "enableMention", p);
-                        configPlayer.removeStrPlayer(pName, "ALL"); // remove all for player
-                    } else { // if all not exist to player
-                        sendMessage(namePlugin, "disableMention", p);
-                        configPlayer.addStrPlayer(pName, "ALL"); // add all for player
-                    }
-                } else { // if player not exist
-                    sendMessage(namePlugin, "disableMention", p);
-                    configPlayer.addStrPlayer(pName, "ALL"); // add all for player
-                }
-            }
+        if (args.length == 0) {
+            toggleGlobalNotification(p, pName, namePlugin);
             configPlayer.reload();
+            return true;
         }
-        return false;
+
+        switch (args[0]) {
+            case "toggle":
+                if (args.length == 2) {
+                    toggleSpecificNotification(p, pName, namePlugin, args[1]);
+                } else {
+                    toggleGlobalNotification(p, pName, namePlugin);
+                }
+                break;
+
+            case "reload":
+                if (!p.hasPermission("notifier.admin")) {
+                    sendMessage(namePlugin, "permissionMessage", p);
+                    break;
+                }
+                config.reload();
+                configPlayer.reload();
+                LanguageLoader.reload();
+                sendMessage(namePlugin, "reload", p);
+                break;
+
+            case "help":
+                handleHelp(p, namePlugin, pName);
+                break;
+
+            default:
+                toggleGlobalNotification(p, pName, namePlugin);
+        }
+        configPlayer.reload();
+        return true;
+    }
+
+    private void handleHelp(Player p, String namePlugin, String pName) {
+        String mentionFormat = ColorsUtils.convertHelp(config.getFormatMention());
+        int delay = config.getDelay();
+        double price = config.getEcoPrice();
+        String symbol = config.getEcoSymbol();
+        boolean delayBool = config.getDelay() > 0;
+
+        List<String> listPlayer = configPlayer.listPlayer(pName);
+        final String helpInfoIgnore1 = config.getLanguagePath("helpInfoIgnore1");
+        final String helpInfoIgnore2 = config.getLanguagePath("helpInfoIgnore2");
+        if (listPlayer.isEmpty()) {
+            listPlayer.add(helpInfoIgnore1);
+        } else if (listPlayer.contains("ALL")) {
+            listPlayer.clear();
+            listPlayer.add(helpInfoIgnore2);
+        }
+        CmdHelp.sendHelp(p, namePlugin, mentionFormat, delay, price, symbol, config.getEcoUse(), delayBool, listPlayer);
+    }
+
+    private void toggleSpecificNotification(Player p, String pName, String namePlugin, String argPlayer) {
+        if (!(configPlayer.checkPlayerExist(pName))) {
+            configPlayer.addStrPlayer(pName, argPlayer);
+            sendMessage(namePlugin, "disableMentionPlayer", p, argPlayer);
+            return;
+        }
+        if (configPlayer.checkPlayerContain(pName, argPlayer)) {
+            configPlayer.removeStrPlayer(pName, argPlayer);
+            sendMessage(namePlugin, "enableMentionPlayer", p, argPlayer);
+        } else {
+            configPlayer.addStrPlayer(pName, argPlayer);
+            sendMessage(namePlugin, "disableMentionPlayer", p, argPlayer);
+        }
+    }
+
+    private void toggleGlobalNotification(Player p, String pName, String namePlugin) {
+        if (!(configPlayer.checkPlayerExist(pName))) {
+            configPlayer.addStrPlayer(pName, "ALL");
+            sendMessage(namePlugin, "disableMention", p);
+            return;
+        }
+        if (configPlayer.checkPlayerContain(pName, "ALL")) {
+            configPlayer.removeStrPlayer(pName, "ALL");
+            sendMessage(namePlugin, "enableMention", p);
+        } else {
+            configPlayer.addStrPlayer(pName, "ALL");
+            sendMessage(namePlugin, "disableMention", p);
+        }
     }
 
     private void sendMessage(String namePlugin, String path, Player p) {
@@ -176,15 +129,4 @@ public class ManagerCmd implements CommandExecutor {
         );
         p.sendMessage(namePlugin + " " + ColorsUtils.replaceAndConvert(config.getLanguagePath(path), replacements));
     }
-
-//	private void runClear() {
-//		int delay = 10 * 20;
-//		BukkitScheduler scheduler = NotifierPlayer.instance.getServer().getScheduler();
-//		scheduler.scheduleSyncDelayedTask(NotifierPlayer.instance, new Runnable() {
-//			@Override
-//			public void run() {
-//				confirm = false;
-//			}
-//		}, delay);
-//	}
 }
