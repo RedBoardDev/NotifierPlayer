@@ -26,19 +26,6 @@ public class ColorsUtils {
         return ChatColor.translateAlternateColorCodes((char) '&', matcher(msg));
     }
 
-
-//    public static String convert(String msg, String replace1) {
-//        msg = String.format(msg.replaceAll("%player%", replace1));
-//        return ChatColor.translateAlternateColorCodes((char) '&', matcher(msg));
-//    }
-//
-//    public static String convert(String msg, String replace1, String replace2) {
-//        msg = String.format(msg.replaceAll("%player%", replace1).replaceAll("%caller%", replace2)
-//                .replaceAll("%price%", replace1).replace("%symbol%", replace2));
-//        return ChatColor.translateAlternateColorCodes((char) '&', matcher(msg));
-//    }
-//
-
     public static String convertHelp(String msg) {
         msg = String.format(msg.replaceAll("%n", System.lineSeparator()).replaceAll("%player%", "player")
                 .replaceAll("%caller%", "player"));
@@ -58,7 +45,7 @@ public class ColorsUtils {
         while (matcher.find()) {
             String color = msg.substring(matcher.start(), matcher.end());
             String color1 = color.replace("{", "").replace("}", "");
-            if (Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17"))
+            if (isVersionAtLeast116())
                 msg = msg.replace(color, (Object) ChatColor.of((String) color1) + "");
             else {
                 String red = color1.substring(1, 3);
@@ -71,6 +58,31 @@ public class ColorsUtils {
             matcher = PATTERN.matcher(msg);
         }
         return msg;
+    }
+
+    private static final Pattern VERSION_PATTERN = Pattern.compile("MC: (\\d+\\.\\d+)");
+
+    public static boolean isVersionAtLeast116() {
+        String versionString = Bukkit.getVersion();
+
+        Matcher matcher = VERSION_PATTERN.matcher(versionString);
+        if (matcher.find()) {
+            String minecraftVersion = matcher.group(1);
+
+            String[] versionParts = minecraftVersion.split("\\.");
+
+            if (versionParts.length >= 2) {
+                try {
+                    int majorVersion = Integer.parseInt(versionParts[0]);
+                    int minorVersion = Integer.parseInt(versionParts[1]);
+
+                    return majorVersion > 1 || (majorVersion == 1 && minorVersion >= 16);
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
     // Color management for version <1.16

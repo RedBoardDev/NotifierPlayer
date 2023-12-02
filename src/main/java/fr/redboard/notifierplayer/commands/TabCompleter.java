@@ -5,9 +5,8 @@ import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 
-public class TabCompletor implements TabCompleter {
+public class TabCompleter implements org.bukkit.command.TabCompleter {
 
     List<String> arguments1 = new ArrayList<>();
     List<String> argumentsAdmin = new ArrayList<>();
@@ -23,25 +22,22 @@ public class TabCompletor implements TabCompleter {
             this.argumentsAdmin.add("reload");
         }
         List<String> result = new ArrayList<>();
+
+        if (args.length != 1)
+            return null;
         if (sender.hasPermission("notifier.admin") ||sender.isOp()) {
-            if (args.length == 1) {
                 for (String str : this.argumentsAdmin) {
                     if (str.toLowerCase().startsWith(args[0].toLowerCase())) {
                         result.add(str);
                     }
                 }
                 return result;
-            }
-        } else {
-            if (args.length == 1) {
-                for (String str : this.arguments1) {
-                    if (str.toLowerCase().startsWith(args[0].toLowerCase())) {
-                        result.add(str);
-                    }
-                }
-                return result;
+        }
+        for (String str : this.arguments1) {
+            if (str.toLowerCase().startsWith(args[0].toLowerCase())) {
+                result.add(str);
             }
         }
-        return null;
+        return result;
     }
 }

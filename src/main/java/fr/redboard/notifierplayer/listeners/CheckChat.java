@@ -41,11 +41,7 @@ public class CheckChat implements Listener {
             final String pluginName = config.getNamePlugin();
             permissionPlayer = setPermPlayer(pCaller);
             if (ChatColor.stripColor(message).equals(setPosSymbol("everyone"))) {
-                if (permissionPlayer >= 2)
-                    everyone(e, message, 1, pCaller, pluginName);
-                else {
-                    everyone(e, message, 0, pCaller, pluginName);
-                }
+                callEveryone(e, message, permissionPlayer >= 2, pCaller, pluginName);
             }
             for (Player pCall : Bukkit.getOnlinePlayers()) {
                 verifyPerPlayer(pCaller, pCall, pluginName, message, e);
@@ -104,11 +100,7 @@ public class CheckChat implements Listener {
     }
 
     private void managerDelay(Player pCaller, String callName) {
-        if (config.getDelay() < 1)
-            return;
-        if (pCaller.isOp())
-            return;
-        if (permissionPlayer < 1)
+        if (config.getDelay() < 1 || pCaller.isOp() || permissionPlayer < 1)
             return;
         playerTime.add(callName);
         runStop(callName);
@@ -132,19 +124,19 @@ public class CheckChat implements Listener {
             e.setMessage(e.getMessage().replace(messageListI, strNoNick));
     }
 
-    private void everyone(AsyncPlayerChatEvent e, CharSequence messageListI, int code, Player pCaller,
+    private void callEveryone(AsyncPlayerChatEvent e, CharSequence messageListI, boolean code, Player pCaller,
                           String pluginName) {
-        if (code == 1) {
-            String mentionChange = ColorsUtils.convert(config.getFormatEveryone() + "§r");
-            e.setMessage(e.getMessage().replace(messageListI, mentionChange));
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                sendScreenDisplay(p, "everyone", "everyone");
-                if (config.getActiveSound())
-                    playSoundEv(p);
-            }
-        } else {
+        if (!code) {
             canceller("permissionMessage", pCaller, String.valueOf(messageListI), e, messageListI, pluginName);
             e.setMessage(e.getMessage());
+            return;
+        }
+        String mentionChange = ColorsUtils.convert(config.getFormatEveryone() + "§r");
+        e.setMessage(e.getMessage().replace(messageListI, mentionChange));
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            sendScreenDisplay(p, "everyone", "everyone");
+            if (config.getActiveSound())
+                playSoundEv(p);
         }
     }
 
@@ -156,10 +148,7 @@ public class CheckChat implements Listener {
     }
 
     private String setPosSymbol(String callName) {
-        if (config.getPosSymbol())
-            return callName + config.getSymbol();
-        else
-            return config.getSymbol() + callName;
+        return (config.getPosSymbol() ? callName + config.getSymbol() : config.getSymbol() + callName);
     }
 
     private void canceller(String path, Player pCaller, String callName, AsyncPlayerChatEvent e,
