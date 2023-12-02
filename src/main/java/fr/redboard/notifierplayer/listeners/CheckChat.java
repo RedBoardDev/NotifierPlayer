@@ -16,14 +16,12 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import fr.redboard.notifierplayer.NotifierPlayer;
 import fr.redboard.notifierplayer.utils.ColorsUtils;
-import fr.redboard.notifierplayer.utils.LanguageLoader;
 import fr.redboard.notifierplayer.utils.ManagerConfig;
 import fr.redboard.notifierplayer.utils.ManagerPlayerList;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class CheckChat implements Listener {
-
     private final List<String> playerTime;
     private final ManagerConfig config;
     private int permissionPlayer;
@@ -50,54 +48,70 @@ public class CheckChat implements Listener {
                 }
             }
             for (Player pCall : Bukkit.getOnlinePlayers()) {
-                final String callName = pCall.getName(); // appeler
-                if (!ChatColor.stripColor(message.toLowerCase()).equals(setPosSymbol(callName.toLowerCase())))
-                    continue;
-                final String pluginNameConvert = ColorsUtils.convert(pluginName);
-                if (permissionPlayer >= 1 || (!configPlayer.checkPlayerContain(pCall.toString(), "ALL")
-                        && !configPlayer.checkPlayerContain(pCall.toString(), pCaller.getName()))) {
-                    if (permissionPlayer >= 1 || !playerTime.contains(callName)) {
-                        if ((pCaller != pCall) || (config.getMYourSelf())) {
-                            if (!isVanished(pCall) && pCaller.canSee(pCall)) {
-                                if (config.getEcoUse()) {
-                                    if (ecoUse(pCaller, pluginNameConvert, e, callName, pluginName, message) == false)
-                                        break;
-                                }
-                                final String callerName = pCaller.getName();
-                                final String mentionChange = ColorsUtils.replaceAndConvert(config.getFormatMention() + "§r", Map.of(
-                                                "%player%", callName,
-                                                "%caller%", callerName
-                                        ));
-                                final String mentionChangeNickName = ColorsUtils.replaceAndConvert(config.getFormatMention() + "§r", Map.of(
-                                                "%player%", ChatColor.stripColor(pCall.getDisplayName()),
-                                                "%caller%", callerName
-                                        ));
-                                setMessage(e, message, mentionChange, mentionChangeNickName);
-                                sendScreenDisplay(pCall, callerName, callName);
-                                if (config.getActiveSound())
-                                    playSound(pCall);
-                                managerDelay(pCaller, callName);
-                            } else
-                                e.setMessage(e.getMessage().replace(message, callName));
-                        } else
-                            canceller("yourselfMention", pCaller, callName, e, message, pluginName);
-                    } else
-                        canceller("delayMention", pCaller, callName, e, message, pluginName);
-                } else
-                    canceller("playerListError", pCaller, callName, e, message, pluginName);
+                verifyPerPlayer(pCaller, pCall, pluginName, message, e);
             }
         }
     }
 
-    private void managerDelay(Player pCaller, String callName) {
-        if ((config.getDelay() > 0)) {
-            if (!pCaller.isOp()) {
-                if (!(permissionPlayer >= 1)) {
-                    playerTime.add(callName);
-                    runStop(callName);
-                }
-            }
+    private void verifyPerPlayer(Player pCaller, Player pCall, String pluginName, String message, AsyncPlayerChatEvent e) {
+        final String callName = pCall.getName(); // appeler
+        if (!ChatColor.stripColor(message.toLowerCase()).equals(setPosSymbol(callName.toLowerCase())))
+            return;
+        final String pluginNameConvert = ColorsUtils.convert(pluginName);
+
+        if (!errorHandling(e, callName, pluginNameConvert, message, pCaller, pCall))
+            return;
+
+        final String callerName = pCaller.getName();
+        final String mentionChange = ColorsUtils.replaceAndConvert(config.getFormatMention() + "§r", Map.of(
+                "%player%", callName,
+                "%caller%", callerName
+        ));
+        final String mentionChangeNickName = ColorsUtils.replaceAndConvert(config.getFormatMention() + "§r", Map.of(
+                "%player%", ChatColor.stripColor(pCall.getDisplayName()),
+                "%caller%", callerName
+        ));
+
+        setMessage(e, message, mentionChange, mentionChangeNickName);
+        sendScreenDisplay(pCall, callerName, callName);
+        if (config.getActiveSound())
+            playSound(pCall);
+        managerDelay(pCaller, callName);
+    }
+
+    private boolean errorHandling(AsyncPlayerChatEvent e, String callName, String pluginName, String message, Player pCaller, Player pCall) {
+        if (permissionPlayer == 0) {
+            canceller("permissionMessage", pCaller, callName, e, message, pluginName);
+            return false;
         }
+        if (configPlayer.checkPlayerContain(pCall.toString(), "ALL") || configPlayer.checkPlayerContain(pCall.toString(), pCaller.getName())) {
+            canceller("playerListError", pCaller, callName, e, message, pluginName);
+            return false;
+        }
+        if (playerTime.contains(callName) && permissionPlayer < 1) {
+            canceller("delayMention", pCaller, callName, e, message, pluginName);
+            return false;
+        }
+        if (pCaller == pCall && !config.getMYourSelf()) {
+            canceller("yourselfMention", pCaller, callName, e, message, pluginName);
+            return false;
+        }
+        if (isVanished(pCall) || !pCaller.canSee(pCall)) {
+            e.setMessage(e.getMessage().replace(message, callName));
+            return false;
+        }
+        return true;
+    }
+
+    private void managerDelay(Player pCaller, String callName) {
+        if (config.getDelay() < 1)
+            return;
+        if (pCaller.isOp())
+            return;
+        if (permissionPlayer < 1)
+            return;
+        playerTime.add(callName);
+        runStop(callName);
     }
 
     private int setPermPlayer(Player pCaller) {
@@ -148,12 +162,6 @@ public class CheckChat implements Listener {
             return config.getSymbol() + callName;
     }
 
-    private boolean ecoUse(Player pCaller, String pluginNameConvert, AsyncPlayerChatEvent e, String callName,
-                           String pluginName, CharSequence messageListI) {
-
-        return false;
-    }
-
     private void canceller(String path, Player pCaller, String callName, AsyncPlayerChatEvent e,
                            CharSequence messageListI, String pluginName) {
         pCaller.sendMessage(ColorsUtils.convert(pluginName + " " + config.getLanguagePath(path)));
@@ -175,7 +183,7 @@ public class CheckChat implements Listener {
         }, delay);
     }
 
-    private String gethMapTitle(String path) {
+    private String getMapTitle(String path) {
         return config.hMapTitle().get(path);
     }
 
@@ -185,28 +193,28 @@ public class CheckChat implements Listener {
                 "%caller%", callerName
         );
 
-        pCall.sendTitle(ColorsUtils.replaceAndConvert(gethMapTitle("mainTitle"), replacements),
-                ColorsUtils.replaceAndConvert(gethMapTitle("subTitle"),replacements),
-                Integer.parseInt(gethMapTitle("fadeIn")), Integer.parseInt(gethMapTitle("stay")),
-                Integer.parseInt(gethMapTitle("fadeOut")));
+        pCall.sendTitle(ColorsUtils.replaceAndConvert(getMapTitle("mainTitle"), replacements),
+                ColorsUtils.replaceAndConvert(getMapTitle("subTitle"),replacements),
+                Integer.parseInt(getMapTitle("fadeIn")), Integer.parseInt(getMapTitle("stay")),
+                Integer.parseInt(getMapTitle("fadeOut")));
     }
 
-    private String gethMapSound(String path) {
+    private String getMapSound(String path) {
         return config.hMapSound().get(path);
     }
 
-    private String gethMapSoundEv(String path) {
+    private String getMapSoundEv(String path) {
         return config.hMapSoundEv().get(path);
     }
 
     private void playSound(Player pCall) {
-        pCall.playSound(pCall.getLocation(), Sound.valueOf((gethMapSound("type"))),
-                Float.parseFloat(gethMapSound("volume")), Float.parseFloat(gethMapSound("pitch")));
+        pCall.playSound(pCall.getLocation(), Sound.valueOf((getMapSound("type"))),
+                Float.parseFloat(getMapSound("volume")), Float.parseFloat(getMapSound("pitch")));
     }
 
     private void playSoundEv(Player pCall) {
-        pCall.playSound(pCall.getLocation(), Sound.valueOf((gethMapSoundEv("type"))),
-                Float.parseFloat(gethMapSoundEv("volume")), Float.parseFloat(gethMapSoundEv("pitch")));
+        pCall.playSound(pCall.getLocation(), Sound.valueOf((getMapSoundEv("type"))),
+                Float.parseFloat(getMapSoundEv("volume")), Float.parseFloat(getMapSoundEv("pitch")));
     }
 
     private void sendActionBar(String callName, String callerName, Player pCall) {
